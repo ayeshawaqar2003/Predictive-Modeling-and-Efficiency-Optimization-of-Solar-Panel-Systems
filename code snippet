@@ -1,0 +1,42 @@
+features = new_df.drop(columns=["Date", "Outcome"])
+labels = new_df["Outcome"]
+
+scaler = MinMaxScaler()
+
+scaled_features = scaler.fit_transform(features)
+
+def create_sequences(data, labels, time_steps=15):
+    X, y = [], []
+    for i in range(len(data) - time_steps):
+        X.append(data[i:i+time_steps])
+        y.append(labels[i+time_steps])  # Predict the Outcome after the sequence
+    return np.array(X), np.array(y)
+
+X_15, y_15 = create_sequences(scaled_features, labels.values, time_steps=15)
+
+X_30, y_30 = create_sequences(scaled_features, labels.values, time_steps=30)
+
+
+X_train_15, X_test_15, y_train_15, y_test_15 = train_test_split(X_15, y_15, test_size=0.2, random_state=42)
+X_train_30, X_test_30, y_train_30, y_test_30 = train_test_split(X_30, y_30, test_size=0.2, random_state=42)
+
+
+def build_rnn(input_shape):
+    model = Sequential()
+    model.add(SimpleRNN(50, activation='relu', input_shape=input_shape))
+    model.add(Dense(1))  # Use Dense(5, activation='softmax') for classification with 4 classes
+    model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+    return model
+
+def build_lstm(input_shape):
+    model = Sequential()
+    model.add(LSTM(50, activation='relu', input_shape=input_shape))
+    model.add(Dense(1))
+    model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+    return model
+
+lstm_model = build_lstm((30, X_train_30.shape[2]))
+lstm_model.fit(X_train_30, y_train_30, epochs=50, batch_size=16, validation_data=(X_test_30, y_test_30))
+
+rnn_model = build_rnn((15, X_train_15.shape[2]))
+rnn_model.fit(X_train_15, y_train_15, epochs=50, batch_size=16, validation_data=(X_test_15, y_test_15))
