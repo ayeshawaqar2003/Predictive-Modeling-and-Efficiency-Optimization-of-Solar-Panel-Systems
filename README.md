@@ -47,7 +47,7 @@ We designed a real-time, AI-based predictive maintenance system for solar PV ins
 - **Sabrina Khan** – Preprocessing, Literature Review
 
 Supervised by: Ms. Arham Iqbal and Dr. Ghous Bakhsh  
-Industry Partner: Reon Energy Ltd
+
 
 ### 📜 License
 
