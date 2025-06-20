@@ -1,7 +1,7 @@
 # Predictive-Modeling-and-Efficiency-Optimization-of-Solar-Panel-Systems
 # Predictive Maintenance for Solar PV Systems 🌞
 
-This repository contains the complete implementation of our undergraduate final year project at NED University of Engineering & Technology, titled:
+This repository contains the implementation of our undergraduate final year project at NED University of Engineering & Technology, titled:
 
 **"Predictive Modeling and Efficiency Optimization of Solar Panel Systems"**
 
@@ -33,13 +33,7 @@ We designed a real-time, AI-based predictive maintenance system for solar PV ins
 - **Precision:** 83%
 - Anomalies detected 2–5 days in advance
 
-### 📁 Repository Structure
 
-- `docs/`: Final thesis PDF
-- `data/`: Cleaned datasets (sample only)
-- `notebooks/`: Jupyter notebooks for EDA, training, and evaluation
-- `src/`: Core Python scripts for preprocessing, model, and utils
-- `streamlit_app/`: Streamlit web UI for visualization and real-time insights
 
 ### 📸 Dashboard Preview
 
