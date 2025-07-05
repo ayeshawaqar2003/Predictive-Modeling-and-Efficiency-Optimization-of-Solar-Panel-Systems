@@ -40,13 +40,7 @@ We designed a real-time, AI-based predictive maintenance system for solar PV ins
 ![image](https://github.com/user-attachments/assets/1c9a68d6-d2c8-49d9-ae0c-11dbd35d4b8c)
 
 
-### 👩‍💻 Contributors
 
-- **Ayesha Waqar** – AI Modeling, Dashboard Development  
-- **Syeda Michelle Sajjad** – Data Engineering, SCADA Logs  
-- **Sabrina Khan** – Preprocessing, Literature Review
-
-Supervised by: Ms. Arham Iqbal and Dr. Ghous Bakhsh  
 
 
 ### 📜 License
