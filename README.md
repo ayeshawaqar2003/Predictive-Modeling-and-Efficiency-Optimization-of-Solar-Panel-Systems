@@ -63,34 +63,7 @@ The pipeline outputs a full benchmark comparison table across all architecture a
 * **Machine Learning & Data Engineering:** scikit-learn, NumPy, pandas
 * **Data Visualization:** Matplotlib, Seaborn
 
----
 
- 
-## How to Run
- 
-**1. Clone the repository**
-```bash
-git clone https://github.com/ayeshawaqar2003/solar-panel-predictive-maintenance.git
-cd solar-panel-predictive-maintenance
-```
- 
-**2. Install dependencies**
-```bash
-pip install -r requirements.txt
-```
- 
-**3. Add your dataset**
-Place your Excel file named `AllInOne.xlsx` inside the `data/` folder. The file should contain:
-- `Date` column
-- `Expected_kWh` column
-- `Actual_kWh` column
-- Any additional weather/environmental feature columns
-**4. Run the pipeline**
-```bash
-python model.py
-```
- 
-The pipeline will train all architectures across all timestep windows and print a full benchmark table on completion.
  
 ---
 ## Key Design Decisions
@@ -110,7 +83,6 @@ Maintenance scheduling is a decision problem, not a continuous prediction proble
  
 - Extend predictions to non-weather maintenance issues (inverter faults, wiring degradation)
 - Add real-time data ingestion pipeline
-- Build a Streamlit dashboard for visual monitoring and scheduling
 - Incorporate block-level geospatial mapping for crew routing optimization
 
 ## Author
