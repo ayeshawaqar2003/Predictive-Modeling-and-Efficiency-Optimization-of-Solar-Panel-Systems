@@ -1,44 +1,124 @@
-# Predictive-Modeling-and-Efficiency-Optimization-of-Solar-Panel-Systems
-# Predictive Maintenance for Solar PV Systems 🌞
+# Solar Panel Predictive Maintenance System 🌞
 
-This repository contains the implementation of our undergraduate final year project at NED University of Engineering & Technology, titled:
+A machine learning pipeline that predicts which solar panel blocks need cleaning — before efficiency drops, not after.
 
-**"Predictive Modeling and Efficiency Optimization of Solar Panel Systems"**
+Built as my bachelor's thesis. The real problem: managing acres of solar panels in an environment where sandstorms and dust are constant. The old solution was washing everything every week regardless. That wastes water, labor, and time. This system learns from three years of performance and weather data to predict *which* blocks actually need maintenance, and *when*.
 
-## 🚀 Project Summary
+---
 
-We designed a real-time, AI-based predictive maintenance system for solar PV installations using LSTM neural networks. The system forecasts inverter output and flags anomalies due to soiling, temperature, or inverter failure using multivariate SCADA data and environmental inputs (PM2.5, humidity, etc.).
+## The Problem
 
-### 🔧 Core Technologies
+Large-scale solar arrays lose efficiency gradually due to dust and sandstorm accumulation. Traditional maintenance schedules are fixed — wash everything, every week. This is:
 
-- Python, Pandas, NumPy
-- TensorFlow, Keras (LSTM modeling)
-- Streamlit (dashboard)
-- Huawei SmartLogger 3000A (data acquisition)
-- SCADA logs from Reon Energy Ltd
+- **Wasteful** — most panels don't need cleaning that frequently
+- **Expensive** — labor and water costs at scale are significant
+- **Inefficient** — fixed schedules miss panels that actually need urgent attention
 
-### 📊 Features
+This system replaces guesswork with data-driven predictions.
 
-- Multivariate LSTM forecasting for energy output
-- Anomaly classification into 4 actionable maintenance levels
-- Real-time interactive Streamlit dashboard
-- Retraining mechanism for adaptive seasonal learning
-- Performance metrics: MAE, RMSE, R², Precision, Recall
+---
 
-### 🧪 Results
+## What It Does
 
-- **MAE:** 4.6%
-- **RMSE:** 6.9%
-- **Recall:** 91%
-- **Precision:** 83%
-- Anomalies detected 2–5 days in advance
+- Ingests historical solar panel performance data (Expected kWh vs Actual kWh) alongside weather and environmental variables
+- Engineers a performance gap feature and classifies panel blocks into 4 maintenance urgency categories (0 = optimal, 3 = critical)
+- Trains and compares three deep learning architectures — **Bidirectional LSTM, GRU, and RNN** — across multiple sequence window lengths (7, 15, 30, 60 days)
+- Uses **TimeSeriesSplit cross-validation** to ensure no future data leaks into training
+- Outputs a ranked comparison table of all model/timestep combinations by F1 score, accuracy, precision, and recall
+
+---
+
+## Model Architectures
+
+| Architecture | Details |
+|---|---|
+| **Bidirectional LSTM** | Stacked 2-layer BiLSTM with batch normalization and dropout |
+| **GRU** | Stacked 2-layer GRU with batch normalization and dropout |
+| **SimpleRNN** | Baseline with batch normalization and dropout |
+
+All models use:
+- **RobustScaler** — handles outliers from sandstorm events better than MinMaxScaler
+- **Softmax classification head** — 4-class output (maintenance urgency levels)
+- **Early stopping + learning rate reduction** — prevents overfitting automatically
+- **TimeSeriesSplit** — strict chronological cross-validation, no data leakage
+
+---
+
+## Results
+
+The pipeline outputs a full benchmark comparison table across all architecture and timestep combinations. The top-performing configuration was the 30-day window using a GRU network:
+
+| Architecture | Timesteps | Mean Accuracy | Mean F1-Score | Mean Precision | Mean Recall |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **GRU** | 30 | 0.8421 | 0.8214 | 0.8250 | 0.8190 |
+| **LSTM** | 30 | 0.8355 | 0.8108 | 0.8145 | 0.8085 |
+| **RNN** | 15 | 0.6850 | 0.6412 | 0.6530 | 0.6385 |
 
 
 
-### 📸 Dashboard Preview
+## Tech Stack
 
-![image](https://github.com/user-attachments/assets/1c9a68d6-d2c8-49d9-ae0c-11dbd35d4b8c)
+* **Language:** Python 3.9+
+* **Deep Learning Frameworks:** TensorFlow / Keras
+* **Machine Learning & Data Engineering:** scikit-learn, NumPy, pandas
+* **Data Visualization:** Matplotlib, Seaborn
 
+---
+
+ 
+## How to Run
+ 
+**1. Clone the repository**
+```bash
+git clone https://github.com/ayeshawaqar2003/solar-panel-predictive-maintenance.git
+cd solar-panel-predictive-maintenance
+```
+ 
+**2. Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+ 
+**3. Add your dataset**
+Place your Excel file named `AllInOne.xlsx` inside the `data/` folder. The file should contain:
+- `Date` column
+- `Expected_kWh` column
+- `Actual_kWh` column
+- Any additional weather/environmental feature columns
+**4. Run the pipeline**
+```bash
+python model.py
+```
+ 
+The pipeline will train all architectures across all timestep windows and print a full benchmark table on completion.
+ 
+---
+## Key Design Decisions
+ 
+**Why RobustScaler instead of MinMaxScaler?**
+Solar panel data contains extreme outliers during sandstorm events. RobustScaler uses median and interquartile range instead of min/max, making it significantly more stable under these conditions.
+ 
+**Why TimeSeriesSplit instead of random train/test split?**
+Random splitting on time-series data leaks future information into training — the model learns from data that wouldn't exist yet at prediction time. TimeSeriesSplit enforces strict chronological order, making performance estimates realistic.
+ 
+**Why 4 classification categories instead of regression?**
+Maintenance scheduling is a decision problem, not a continuous prediction problem. A maintenance crew needs to know *how urgently* a block needs attention — not a raw efficiency number. Four quartile-based categories map directly to actionable priority levels.
+ 
+---
+ 
+## Future Work
+ 
+- Extend predictions to non-weather maintenance issues (inverter faults, wiring degradation)
+- Add real-time data ingestion pipeline
+- Build a Streamlit dashboard for visual monitoring and scheduling
+- Incorporate block-level geospatial mapping for crew routing optimization
+
+## Author
+
+**Ayesha Waqar** — Electronics Engineering graduate, Master's student specializing in AI
+
+
+📧 [ayeshagul2003@hotmail.com · 💼 www.linkedin.com/in/ayeshagulwaqar · 🐙github.com/ayeshawaqar2003
 
 
 
